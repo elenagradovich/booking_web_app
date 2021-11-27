@@ -28,11 +28,12 @@ const signup = async (req, res, next) => {
     email,
     password: hashedPassword,
     roles: [userRole.value],
-    avatar: "https://images.unsplash.com/photo-1426604966848-d7adac402bff?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=200&q=80"
+    avatar: " "
   });
 
   try {
     await newUser.save();
+
     // generate jwt
     const token = generateJwt({userId: newUser._id, role: newUser.role});
     req.session.isAuthenticated = true

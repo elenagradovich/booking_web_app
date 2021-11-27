@@ -2,33 +2,45 @@ const Comment = require('../models/comment');
 
 
 const getCommentsByHotelId = async (req, res, next) => {
-  const hotelId = req.params.id;
-  
-    const courses = await Comment
-      .find()
-      .populate('userId', 'email name') //populate достает и добавляет данные по id в таблицу courses из users
-      .select('price title img') //select относится к курсам, для вывода нужных полей
-  
-    res.render('courses', {
-      title: 'Курсы',
-      isCourses: true,
-      courses
-    })
-
-
+  const id = req.params.hotel_id;
+  const comm = await Comment.find({hotelId: id})
   try {
-    const hotel = await Hotel.findById(hotelId);
-    res.send( hotel );
+    const comments = await Comment
+      .find({hotelId: id})
+      .populate({ path: 'userId', select: 'name' }) 
+      .select('comment date rating')
+    
+    res.status(200).send( comments );
   } catch (err) {
-    return res.status(404).json({message: "Hotel not found"})
+    return res.status(400).json({message: "Comments for this hotel not found"})
   }
 };
 
 const addNewComment = async (req, res, next) => {
-  const { id } = req.body
-  delete req.body.id
-  await Course.findByIdAndUpdate(id, req.body)
-  res.redirect('/courses')
+  const hotelId = req.params.hotel_id;
+  const userId = req.userData.userId;
+  const { comment, rating} = req.body
+  try {
+    const newComment = new Comment(
+      {
+        comment,
+        rating,
+        userId,
+        hotelId
+      }
+    )
+    await newComment.save();
+  } catch (err) {
+    return res.status(400).json({message: "Comments wasn't saved"})
+  }
+  const comments = await Comment
+    .find({hotelId: hotelId})
+    .populate({ path: 'userId', select: 'name' }) 
+    .select('comment date rating')
+  if(!comments) {
+    return res.status(400).json({message: "Comments for this hotel not found"})
+  }
+  res.status(200).send( comments );
 }
 
 module.exports.getCommentsByHotelId = getCommentsByHotelId;

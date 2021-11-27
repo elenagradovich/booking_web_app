@@ -12,6 +12,17 @@ const commentSchema = new Schema({
     type: Date,
     default: Date.now()
   },
+  userId: {
+    type: Schema.Types.ObjectID,
+    ref: 'User',
+    required: true,
+  },
+  hotelId: {
+    type: Schema.Types.ObjectID,
+    ref: 'Hotel',
+    required: true,
+  },
 })
+
 
 module.exports = model('Comment', commentSchema)

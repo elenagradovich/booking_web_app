@@ -8,12 +8,16 @@ function Hotels ({ hotels, sortType }) {
   const [sortedHotels, setSortedHotels] = useState([]);
 
   useEffect(() => {
-    setSortedHotels(sortOffers(hotels, sortType));
+    if(hotels?.length > 0) {
+      setSortedHotels(sortOffers(hotels, sortType));
+    } else {
+      setSortedHotels(hotels);
+    }
   }, [hotels, sortType]);
 
   return(
     <div className="cities__places-list places__list tabs__content">
-      {sortedHotels.map((item) => <PlaceCard hotel={item} key={item.id} />)}
+      {sortedHotels && sortedHotels?.map((item) => <PlaceCard hotel={item} key={item.id} />)}
     </div>
   );
 }
@@ -25,7 +29,7 @@ const mapStateToProps = (state) => ({
 Hotels.propTypes = {
   hotels: PropTypes.arrayOf(
     PropTypes.shape({
-      id: PropTypes.number,
+      id: PropTypes.string,
       title: PropTypes.string,
       type: PropTypes.string,
       rating: PropTypes.number,

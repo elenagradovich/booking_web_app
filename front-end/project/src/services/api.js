@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BASE_URL = 'http://127.0.0.1:8888';
+const BASE_URL = 'http://127.0.0.1:9500';
 const TIME_OUT = 5000;
 
 const HttpCode = {
@@ -17,7 +17,7 @@ export const createAPI = (onUnauthorized, onRedirect) => {
     baseURL: BASE_URL,
     timeout: TIME_OUT,
     headers: {
-      'x-token': token,
+      Authorization: `BEARER ${token}`,
     },
   });
 

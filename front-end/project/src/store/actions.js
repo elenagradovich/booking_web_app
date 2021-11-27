@@ -8,6 +8,10 @@ export const startLoading = () => ({
   type: ActionTypes.START_LOADING,
 });
 
+export const setReviewFormVisible = () => ({
+  type: ActionTypes.REVIEW_FORM_VISIBLE,
+});
+
 export const updateCity = (city) => ({
   type: ActionTypes.CHANGE_ACTIVE_CITY,
   payload: city,
@@ -21,8 +25,7 @@ export const loadHotels = () => (dispatch, _getState, api) => (
     })
 );
 
-export const loadHotel = (id) => (dispatch, _getState, api) => (
-
+export const loadHotelById = (id) => (dispatch, _getState, api) => (
   api.get(getHotelLink(id))
     .then(({data}) => {
       const hotel = humps.camelizeKeys(data);
@@ -100,16 +103,16 @@ export const loadHotelsNearby = (id) => (dispatch, _getState, api) => (
     })
 );
 
-export const loadHotelComments = (id) => (dispatch, _getState, api) => (
-  api.get(getHotelCommentsLink(id))
+export const loadHotelComments = (hotelId) => (dispatch, _getState, api) => (
+  api.get(getHotelCommentsLink(hotelId))
     .then(({data}) => {
       const comments = humps.camelizeKeys(data);
       dispatch({ type: ActionTypes.LOAD_HOTEL_COMMENTS, payload: { comments }});
     })
 );
 
-export const submitComment = (id, { comment, rating }) => (dispatch, _getState, api) => (
-  api.post(getHotelCommentsLink(id), { comment, rating })
+export const submitComment = (hotelId, comment, rating ) => (dispatch, _getState, api) => (
+  api.post(getHotelCommentsLink(hotelId), { comment, rating })
     .then(({data}) => {
       const comments = humps.camelizeKeys(data);
       dispatch({ type: ActionTypes.LOAD_HOTEL_COMMENTS, payload: { comments }});

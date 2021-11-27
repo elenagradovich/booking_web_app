@@ -14,11 +14,17 @@ function PlaceCard ({ hotel }) {
         <div className="place-card__mark">
           <span>Premium</span>
         </div>)}
-      <div className="cities__image-wrapper place-card__image-wrapper">
-        <Link to="#">
-          <img className="place-card__image" src="/img/studio-01.jpg" width="260" height="200" alt="Place"></img>
-        </Link>
-      </div>
+      <div
+        className="cities__image-wrapper place-card__image-wrapper"
+        style={
+          { backgroundImage: `url(${hotel?.previewImage})`,
+            backgroundPosition: "center",
+            backgroundRepeat: "no-repeat",
+            backgroundSize: "cover",
+            width: "100%", 
+            height: "300px"}
+        }
+      />
       <div className="place-card__info">
         <div className="place-card__price-wrapper">
           <div className="place-card__price">
@@ -50,7 +56,7 @@ function PlaceCard ({ hotel }) {
 
 PlaceCard.propTypes = {
   hotel: PropTypes.shape({
-    id: PropTypes.number,
+    id: PropTypes.string,
     title: PropTypes.string,
     type: PropTypes.string,
     rating: PropTypes.number,

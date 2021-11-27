@@ -2,10 +2,8 @@ import { ActionTypes } from '../action-types';
 import { AuthorizationStatus } from '../../constants/authorization-status';
 import Immutable from 'seamless-immutable';
 
-const initialCityId = '017';
-
 const initialState = Immutable({
-  cityId: initialCityId,
+  cityId: '',
   cityOffers: [],
   hotels: [],
   nearPlaces: [],
@@ -14,6 +12,7 @@ const initialState = Immutable({
   isDataLoaded: false,
   authorizationStatus: AuthorizationStatus.UNKNOWN,
   hotel: {},
+  isReviewFormVisible: false,
 });
 
 export const reducer = (state = initialState, action = {}) => {
@@ -66,6 +65,12 @@ export const reducer = (state = initialState, action = {}) => {
         ...state,
         comments: action.payload.comments,
         isDataLoaded: true,
+        isReviewFormVisible: false,
+      };
+    case ActionTypes.REVIEW_FORM_VISIBLE:
+      return {
+        ...state,
+        isReviewFormVisible: true,
       };
     default:
       return state;

@@ -8,7 +8,10 @@ export const NOT_FOUND = '/404';
 export const getOfferLink = (id) => OFFER.replace(':id', id);
 
 export const HOTEL = '/hotels/:id';
-export const getHotelLink = (id) => HOTEL.replace(':id', id);
+export const getHotelLink = (id) => {
+  
+  return HOTEL.replace(':id', id);
+}
 export const NEARBY_HOTELS = '/hotels/:hotel_id/nearby';
 export const getNearbyHotelsLink = (id) => NEARBY_HOTELS.replace(':hotel_id', id);
 export const COMMENTS = 'comments/:hotel_id';

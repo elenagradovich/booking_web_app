@@ -24,20 +24,20 @@ function Review ({ review }) {
   return (
     <li className="reviews__item">
       <div className="reviews__user user">
-        <div className="reviews__avatar-wrapper user__avatar-wrapper">
-          <img className="reviews__avatar user__avatar" src={review?.user.avatarUrl} width="54" height="54" alt="Reviews avatar"></img>
-        </div>
-        <span className="reviews__user-name">{review?.user.name}</span>
+        {/* <div className="reviews__avatar-wrapper user__avatar-wrapper">
+          <img className="reviews__avatar user__avatar" src={review?.userId?.avatar} width="54" height="54" alt="Reviews avatar"></img>
+        </div> */}
+        <span className="reviews__user-name"><b>{review && review?.userId?.name}</b></span>
       </div>
       <div className="reviews__info">
         <div className="reviews__rating rating">
           <div className="reviews__stars rating__stars">
-            <span style={{width: `${review?.rating * RATING_SCALE}%`}}></span>
+            <span style={{width: `${review && review?.rating * RATING_SCALE}%`}}></span>
             <span className="visually-hidden">Rating</span>
-          </div>s
+          </div>
         </div>
         <p className="reviews__text">{review?.comment}</p>
-        <time className="reviews__time" dateTime={getDateInFormat(review?.date, DateTypes.YEAR_MONTH_DAY)}>{getDateInFormat(review?.date, DateTypes.MONTH_YEAR)}</time>
+        <time className="reviews__time" dateTime={getDateInFormat(review?.date, DateTypes.YEAR_MONTH_DAY)}>{getDateInFormat(review && review?.date, DateTypes.MONTH_YEAR)}</time>
       </div>
     </li>
   );
@@ -51,12 +51,9 @@ Review.propTypes = {
   review: PropTypes.shape({
     comment: PropTypes.string,
     date: PropTypes.string,
-    id: PropTypes.number,
+    id: PropTypes.string,
     rating: PropTypes.number,
-    user: PropTypes.shape({
-      avatarUrl: PropTypes.string,
-      id: PropTypes.number,
-      isPro: PropTypes.bool,
+    userId: PropTypes.shape({
       name: PropTypes.string,
     }),
   }),

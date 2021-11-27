@@ -6,12 +6,9 @@ const orderSchema = new Schema({
     require: true
   },
   user: {
-    name: String,
-    userId: {
-      type: Schema.Types.ObjectID,
-      ref: 'User',
-      required: true,
-    },
+    type: Schema.Types.ObjectID,
+    ref: 'User',
+    required: true,
   },
   date: {
     type: Date,

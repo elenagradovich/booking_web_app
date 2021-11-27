@@ -32,13 +32,26 @@ const mapImageUrlToLocalFilePath = (req, url) => {
  * @param {Object|string} payload
  * @param {number} expiresInSeconds - number of seconds the jwt will expire after
  */
-const generateJwt = (payload) => {
-  const token = jwt.sign({data: payload}, jwtSecretKey, {expiresIn: '10'});
-  return token;
+const generateJwt = (payload, expiresInSeconds = 7200) => {
+  const expiration = Math.floor(Date.now() / 1000) + expiresInSeconds;
+  const value = jwt.sign(
+    {
+      exp: expiration, // number of seconds since the epoch.
+      data: payload
+    },
+    jwtSecretKey
+  );
+
+  return value;
 };
 
 const verifyJwt = (token) => {
-  return jwt.verify(token, jwtSecretKey);
+  try {
+    const decodedToken =  jwt.verify(token, jwtSecretKey);
+    return decodedToken;
+  } catch (err) {
+    console.log(err)
+  }
 };
 
 module.exports.mapFilePathToServerUrl = mapFilePathToServerUrl;

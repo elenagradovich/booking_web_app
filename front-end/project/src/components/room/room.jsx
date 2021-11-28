@@ -62,9 +62,10 @@ function Room({ nearPlaces, hotel, onLoadHotelsNearby, onLoadComments, onLoadHot
                 </li>
               </ul>
               <div className="property__price">
-                <b className="property__price-value">&euro;{hotel && hotel?.price}</b>
+                <b className="property__price-value"> {hotel && `${hotel?.price} BYN`}</b>
                 <span className="property__price-text">&nbsp;ночь</span>
               </div>
+              <button className="property__book-button">Забронировать</button>
               <div className="property__inside">
                 <h2 className="property__inside-title">Предлагаемые удобства</h2>
                 <ul className="property__inside-list">
@@ -98,19 +99,10 @@ function Room({ nearPlaces, hotel, onLoadHotelsNearby, onLoadComments, onLoadHot
             </div>
           </div>
           <section className="property__map map">
-            {/* {hotel && Object.keys(hotel).length && nearPlaces &&
-              <Map
-                currentOfferId={+id}
-                cityOffers={[...nearPlaces, hotel]}
-              />} */}
+            {hotel && Object.keys(hotel).length &&
+              <Map hotel={hotel} />}
           </section>
         </section>
-        <div className="container">
-          <section className="near-places places">
-            <h2 className="near-places__title">Предложения рядом</h2>
-            <NearPlaces places={nearPlaces} />
-          </section>
-        </div>
       </main>
     </div>
   );

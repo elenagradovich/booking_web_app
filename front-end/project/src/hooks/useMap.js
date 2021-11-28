@@ -1,15 +1,15 @@
 import { useEffect, useState } from 'react';
 import leaflet from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import { Cities, ZOOM } from '../constants/map';
+import { ZOOM } from '../constants/map';
 
-function useMap(mapRef, city) {
+function useMap(mapRef, cityCords) {
   const [map, setMap] = useState(null);
 
   useEffect(() => {
     if (mapRef.current !== null && map === null) {
       const instance = leaflet.map(mapRef.current, {
-        center: Cities[city].coords,
+        center: cityCords,
         zoom: ZOOM,
       });
 
@@ -27,10 +27,10 @@ function useMap(mapRef, city) {
   }, []);
 
   useEffect(() => {
-    if (mapRef && map && city) {
-      map.setView(Cities[city].coords, ZOOM, { animation: true });
+    if (mapRef && map && cityCords) {
+      map.setView(cityCords, ZOOM, { animation: true });
     }
-  }, [city]);
+  }, [cityCords]);
 
   return map;
 }

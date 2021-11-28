@@ -1,31 +1,23 @@
 import React, { useRef, useEffect } from 'react';
-import PropTypes from 'prop-types';
 import leaflet from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import useMap from '../../hooks/useMap';
-import { connect } from 'react-redux';
 
-const getCityPoints = (hotels, activePlaceId) => [...hotels].map(({location, id}) => {
-  const hotelLocation = {
-    lat: location.latitude,
-    lng: location.longitude,
-    current: id === activePlaceId,
-  };
-  return hotelLocation;
-});
-
-function Map({ currentOfferId, cityOffers, city }) {
+function Map({ hotel }) {
+  const cityLocation = hotel?.cityId.location;
+  const hotelLocation = hotel?.location;
   const mapRef = useRef(null);
-  const pointsOfCity = getCityPoints(cityOffers, currentOfferId);
+  const cityCords = {
+    lat: cityLocation.latitude,
+    lng: cityLocation.longitude,
+  };
 
-  const URL_MARKER_DEFAULT = '../../img/pin.svg';
+  const hotelCords = {
+    lat: hotelLocation.latitude,
+    lng: hotelLocation.longitude,
+  };
+
   const URL_MARKER_CURRENT = '../../img/pin-active.svg';
-
-  const defaultIcon = leaflet.icon({
-    iconUrl: URL_MARKER_DEFAULT,
-    iconSize: [30, 30],
-    iconAnchor: [15, 30],
-  });
 
   const currentIcon = leaflet.icon({
     iconUrl: URL_MARKER_CURRENT,
@@ -33,20 +25,22 @@ function Map({ currentOfferId, cityOffers, city }) {
     iconAnchor: [15, 30],
   });
 
-  const map = useMap(mapRef, city);
+  const map = useMap(mapRef, cityCords);
+ 
   useEffect(() => {
     if (map) {
-      pointsOfCity.forEach(({ lat, lng, current }) => leaflet
-        .marker({
-          lat,
-          lng,
-        }, {
-          icon: current ? currentIcon : defaultIcon,
-        })
-        .addTo(map),
-      );
+      leaflet
+        .marker(
+          {
+            lat: hotelCords.lat,
+            lng: hotelCords.lng,
+          },
+          {
+            icon: currentIcon,
+          })
+        .addTo(map);
     }
-  }, [map, pointsOfCity]);
+  }, [map, hotel]);
   return (
     <div
       id='map'
@@ -57,18 +51,5 @@ function Map({ currentOfferId, cityOffers, city }) {
   );
 }
 
-const mapStateToProps = (state) => ({
-  city: state.city,
-});
 
-Map.propTypes = {
-  cityOffers: PropTypes.array,
-  currentOfferId: PropTypes.number,
-  city: PropTypes.string,
-};
-
-export { Map };
-export default connect(
-  mapStateToProps,
-  null,
-)(Map);
+export default Map;

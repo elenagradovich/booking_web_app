@@ -1,7 +1,7 @@
 import { ActionTypes } from './action-types';
 import * as APIRoutes from '../constants/route-pathes';
 import { AuthorizationStatus } from '../constants/authorization-status';
-import { getHotelCommentsLink, getHotelLink, getNearbyHotelsLink, MAIN } from '../constants/route-pathes';
+import { getHotelCommentsLink, getHotelLink, getNearbyHotelsLink, MAIN, getHotelBookLink } from '../constants/route-pathes';
 import humps from 'humps';
 
 export const startLoading = () => ({
@@ -118,5 +118,13 @@ export const submitComment = (hotelId, comment, rating ) => (dispatch, _getState
       dispatch({ type: ActionTypes.LOAD_HOTEL_COMMENTS, payload: { comments }});
     })
 );
+
+export const submitBooking = (hotelId, bookingInfo) => (dispatch, _getState, api) => {
+  api.post(getHotelBookLink(hotelId), bookingInfo)
+    .then(({data}) => {
+      const orders = humps.camelizeKeys(data);
+      dispatch({ type: ActionTypes.LOAD_ORDERS, payload: { orders }});
+    });
+};
 
 

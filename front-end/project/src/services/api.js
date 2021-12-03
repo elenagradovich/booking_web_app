@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const BASE_URL = 'http://127.0.0.1:9500';
-const TIME_OUT = 5000;
+const TIME_OUT = 15000;
 
 const HttpCode = {
   UNAUTHORIZED: 401,

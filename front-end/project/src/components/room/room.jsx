@@ -1,21 +1,27 @@
-import React, { useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import React, { useEffect, useState} from 'react';
+import { Link, useParams } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Header from '../header/header';
 import Reviews from '../reviews/reviews';
-import NearPlaces from '../near-places/near-places';
+import BookForm from '../book-form/book-form';
+//import NearPlaces from '../near-places/near-places';
 import Map from '../map/map';
 import { connect } from 'react-redux';
 import { RATING_SCALE } from '../../constants/offers';
 import { loadHotelsNearby, loadHotelComments, loadHotelById } from '../../store/actions';
+import { AuthorizationStatus } from '../../constants/authorization-status';
+import { LOGIN, MAIN } from '../../constants/route-pathes';
 
-function Room({ nearPlaces, hotel, onLoadHotelsNearby, onLoadComments, onLoadHotel }) {
+function Room({ nearPlaces, onLoadHotelsNearby, hotel, onLoadComments, onLoadHotel, authorizationStatus }) {
   const { id } = useParams();
+  const [isBookformVisible, setVisibilityBookForm] = useState(false);
+
   useEffect(() => {
     //onLoadHotelsNearby(id);
     onLoadComments(id);
     onLoadHotel(id);
   }, []);
+
 
   return (
     <div className="page">
@@ -65,7 +71,14 @@ function Room({ nearPlaces, hotel, onLoadHotelsNearby, onLoadComments, onLoadHot
                 <b className="property__price-value"> {hotel && `${hotel?.price} BYN`}</b>
                 <span className="property__price-text">&nbsp;ночь</span>
               </div>
-              <button className="property__book-button">Забронировать</button>
+              {authorizationStatus === AuthorizationStatus.AUTH
+                ? <div>
+                  {!isBookformVisible && <button className="property__book-button" onClick={() => setVisibilityBookForm(true)}>Забронировать</button>}
+                  {isBookformVisible && <BookForm hotelId={id} setVisibilityBookForm={setVisibilityBookForm} price={hotel && hotel?.price} />}
+                </div>
+                : <div>
+                  <Link className="property__book-button" to={LOGIN} style={{textAlign: 'center'}}>Для бронирования пройдите авторизацию =></Link>
+                </div>}
               <div className="property__inside">
                 <h2 className="property__inside-title">Предлагаемые удобства</h2>
                 <ul className="property__inside-list">
@@ -114,11 +127,12 @@ Room.propTypes = {
   onLoadComments: PropTypes.func,
   onLoadHotel: PropTypes.func,
   hotel: PropTypes.object,
+  authorizationStatus: PropTypes.string,
 };
 
 
 const mapStateToProps = (state) => ({
-  authInfo: state.USER.authInfo,
+  authorizationStatus: state.USER.authorizationStatus,
   comments: state.DATA.comments,
   nearPlaces: state.DATA.nearPlaces,
   hotel: state.DATA.hotel,

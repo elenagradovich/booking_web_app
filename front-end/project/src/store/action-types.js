@@ -11,4 +11,5 @@ export const ActionTypes = {
   LOAD_HOTEL_COMMENTS: 'load/HOTEL_COMMENTS',
   LOAD_HOTEL: 'load/HOTEL',
   REVIEW_FORM_VISIBLE: 'change/REVIEW_FORM_VISIBLE',
+  LOAD_ORDERS: 'load/ORDERS',
 };

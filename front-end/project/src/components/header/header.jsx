@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { MAIN, LOGIN, BOOKED_HOTELS, REGISTRATION } from '../../constants/route-pathes';
+import { MAIN, LOGIN, ORDERS, REGISTRATION } from '../../constants/route-pathes';
 import { AuthorizationStatus } from '../../constants/authorization-status';
 import { logout } from '../../store/actions';
 
@@ -24,7 +24,7 @@ function Header ({ authInfo, authorizationStatus, onLogout }) {
               <li className="header__nav-item user">
                 {isLogged
                   ? (
-                    <Link className="header__nav-link header__nav-link--profile" to={ BOOKED_HOTELS }>
+                    <Link className="header__nav-link header__nav-link--profile" to={ ORDERS }>
                       <div className="header__avatar-wrapper user__avatar-wrapper"></div>
                       <span className="header__user-name user__name">{authInfo?.email}</span>
                     </Link>)
@@ -57,6 +57,7 @@ Header.propTypes = {
     email: PropTypes.string,
   }),
   authorizationStatus: PropTypes.string,
+  onLogout: PropTypes.func,
 };
 
 const mapStateToProps = (state) => ({

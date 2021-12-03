@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import Main from '../main/main';
 import SignIn from '../sign-in/sign-in';
 import Registration from '../registration/registration';
-import BookedHotels from '../booked-hotels/booked-hotels';
+import Orders from '../orders/orders';
 import Room from '../room/room';
 import NotFound from '../not-found/not-found';
 import * as RoutePath from '../../constants/route-pathes';
@@ -29,8 +29,8 @@ function App({ isDataLoaded, authorizationStatus }) {
         <Route path={ RoutePath.OFFER } exact component={ Room } />
         <Route path={ RoutePath.NOT_FOUND } exact component={ NotFound } />
         <PrivateRoute
-          render={() => <BookedHotels />}
-          path={ RoutePath.BOOKED_HOTELS }
+          render={() => <Orders />}
+          path={ RoutePath.ORDERS }
           exact
         />
         <Route component={ NotFound } />

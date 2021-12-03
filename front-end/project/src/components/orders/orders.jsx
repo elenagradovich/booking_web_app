@@ -3,11 +3,11 @@ import PropTypes from 'prop-types';
 import { MAIN } from '../../constants/route-pathes';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import PlaceCardFavorite from '../place-card-favorite/place-card-favorite';
+import PlaceCardOrder from '../place-card-order/place-card-order';
 import Header from '../header/header';
 
-function BookedHotels ({ favoriteHotels }) {
-  const isEmpty = !favoriteHotels?.length;//Optional chaining operator
+function Orders ({ bookedHotels }) {
+  const isEmpty = !bookedHotels?.length;//Optional chaining operator
 
   return (
     <div className={`page ${isEmpty && 'pages--favorites-empty'}`}>
@@ -16,9 +16,9 @@ function BookedHotels ({ favoriteHotels }) {
         <div className="page__favorites-container container">
           {!isEmpty && (
             <section className="favorites">
-              <h1 className="favorites__title">Saved listing</h1>
+              <h1 className="favorites__title">Забронированные варианты</h1>
               <ul className="favorites__list">
-                {[...favoriteHotels.keys()].map((location) => (
+                {[...bookedHotels.keys()].map((location) => (
                   <li className="favorites__locations-items" key={location}>
                     <div className="favorites__locations locations locations--current">
                       <div className="locations__item">
@@ -28,7 +28,7 @@ function BookedHotels ({ favoriteHotels }) {
                       </div>
                     </div>
                     <div className="favorites__places">
-                      {favoriteHotels.get(location).map((hotel) => <PlaceCardFavorite hotel={hotel} key={hotel.id}/>)}
+                      {bookedHotels.get(location).map((hotel) => <PlaceCardOrder hotel={hotel} key={hotel.id}/>)}
                     </div>
                   </li>))}
               </ul>
@@ -37,31 +37,29 @@ function BookedHotels ({ favoriteHotels }) {
             <section className="favorites favorites--empty">
               <h1 className="visually-hidden">Favorites</h1>
               <div className="favorites__status-wrapper">
-                <b className="favorites__status">Nothing yet saved.</b>
-                <p className="favorites__status-description">Save properties to narrow down search or plan your future trips.</p>
+                <p><b className="favorites__status">Пока список забронированных мест пуст, но мы знаем как это исправить</b></p>
+                <p className="favorites__status-description">Переходи по ссылке и выбирай интересный вариант</p>
+                <Link className="favorites__logo-link" to={MAIN}>
+                  <img className="favorites__logo" src="img/logo.svg" alt="6 map logo" width="64" height="33"></img>
+                </Link>
               </div>
             </section>}
         </div>
       </main>
-      <footer className="footer container">
-        <Link className="footer__logo-link" to={MAIN}>
-          <img className="footer__logo" src="img/logo.svg" alt="6 map logo" width="64" height="33"></img>
-        </Link>
-      </footer>
     </div>
   );
 }
 
-BookedHotels.propTypes = {
-  favoriteHotels: PropTypes.array,
+Orders.propTypes = {
+  bookedHotels: PropTypes.array,
 };
 
 const mapStateToProps = (state) => ({
-  favoriteHotels: state.favoriteHotels,
+  bookedHotels: state.DATA.bookedHotels,
 });
 
-export { BookedHotels };
+export { Orders };
 export default connect(
   mapStateToProps,
   null,
-)(BookedHotels);
+)(Orders);

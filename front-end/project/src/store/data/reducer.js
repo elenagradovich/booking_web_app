@@ -8,6 +8,7 @@ const initialState = Immutable({
   hotels: [],
   nearPlaces: [],
   comments: [],
+  orders: [],
   favoriteHotels: [],
   isDataLoaded: false,
   authorizationStatus: AuthorizationStatus.UNKNOWN,
@@ -64,6 +65,13 @@ export const reducer = (state = initialState, action = {}) => {
       return {
         ...state,
         comments: action.payload.comments,
+        isDataLoaded: true,
+        isReviewFormVisible: false,
+      };
+    case ActionTypes.LOAD_ORDERS:
+      return {
+        ...state,
+        orders: action.payload.orders,
         isDataLoaded: true,
         isReviewFormVisible: false,
       };

@@ -73,7 +73,6 @@ export const reducer = (state = initialState, action = {}) => {
         ...state,
         orders: action.payload.orders,
         isDataLoaded: true,
-        isReviewFormVisible: false,
       };
     case ActionTypes.REVIEW_FORM_VISIBLE:
       return {

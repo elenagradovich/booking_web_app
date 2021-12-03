@@ -9,7 +9,7 @@ const corsМiddleware = require('./middleware/cors-middleware')
 
 //Routes
 const hotelsRoutes = require('./routes/hotels')
-// const offersRoutes = require('./routes/offers')
+const ordersRoutes = require('./routes/orders')
 const commentsRoutes = require('./routes/comments')
 const userRoutes = require('./routes/user')
 
@@ -46,7 +46,7 @@ app.use(bodyParser.json());
 
 // Регистрация роутов
 app.use('/hotels', hotelsRoutes)
-// app.use('/offers', offersRoutes)
+app.use('/orders', ordersRoutes)
 app.use('/comments', commentsRoutes)
 app.use('/user', userRoutes)
 

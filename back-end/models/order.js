@@ -1,19 +1,50 @@
 const {Schema, model} = require('mongoose')
 
 const orderSchema = new Schema({
-  order: {
-    type: Object,
-    require: true
-  },
-  user: {
-    type: Schema.Types.ObjectID,
-    ref: 'User',
-    required: true,
-  },
   date: {
     type: Date,
     default: Date.now()
-  }
+  },
+  date_from: {
+    type: Date,
+    required: true,
+  },
+  date_to: {
+    type: Date,
+    required: true,
+  },
+  guests_amount: {
+    type: Number,
+    required: true,
+  },
+  user_id: {
+    type: String,
+    required: true,
+  },
+  hotel_id: {
+    type: String,
+    required: true,
+  },
+  preview_image: {
+    type: String,
+    required: true,
+  },
+  price: {
+    type: Number,
+    required: true,
+  },
+  total: {
+    type: Number,
+    required: true,
+  },
+  rating: {
+    type: Number,
+    required: true,
+  },
+  title: {
+    type: String,
+    required: true,
+  },
 })
 
 //Schema.Types.ObjectID - связь таблиц

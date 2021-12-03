@@ -1,13 +1,17 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { MAIN } from '../../constants/route-pathes';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PlaceCardOrder from '../place-card-order/place-card-order';
+import { loadOrders } from '../../store/actions';
 import Header from '../header/header';
 
-function Orders ({ bookedHotels }) {
-  const isEmpty = !bookedHotels?.length;//Optional chaining operator
+function Orders ({ orders, onLoadOrders }) {
+  useEffect(() => {
+    onLoadOrders();
+  }, []);
+  const isEmpty = !orders?.length;//Optional chaining operator
 
   return (
     <div className={`page ${isEmpty && 'pages--favorites-empty'}`}>
@@ -18,24 +22,12 @@ function Orders ({ bookedHotels }) {
             <section className="favorites">
               <h1 className="favorites__title">Забронированные варианты</h1>
               <ul className="favorites__list">
-                {[...bookedHotels.keys()].map((location) => (
-                  <li className="favorites__locations-items" key={location}>
-                    <div className="favorites__locations locations locations--current">
-                      <div className="locations__item">
-                        <Link className="locations__item-link" to="#">
-                          <span>{`${location[0]}${location.toLowerCase().slice(1)}`}</span>
-                        </Link>
-                      </div>
-                    </div>
-                    <div className="favorites__places">
-                      {bookedHotels.get(location).map((hotel) => <PlaceCardOrder hotel={hotel} key={hotel.id}/>)}
-                    </div>
-                  </li>))}
+                {orders.map((hotel) => <PlaceCardOrder hotel={hotel} key={hotel.id}/>)}
               </ul>
             </section>)}
           {isEmpty &&
             <section className="favorites favorites--empty">
-              <h1 className="visually-hidden">Favorites</h1>
+              <h1 className="visually-hidden">Orders</h1>
               <div className="favorites__status-wrapper">
                 <p><b className="favorites__status">Пока список забронированных мест пуст, но мы знаем как это исправить</b></p>
                 <p className="favorites__status-description">Переходи по ссылке и выбирай интересный вариант</p>
@@ -51,15 +43,22 @@ function Orders ({ bookedHotels }) {
 }
 
 Orders.propTypes = {
-  bookedHotels: PropTypes.array,
+  orders: PropTypes.array,
+  onLoadOrders: PropTypes.func,
 };
 
 const mapStateToProps = (state) => ({
-  bookedHotels: state.DATA.bookedHotels,
+  orders: state.DATA.orders,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  onLoadOrders() {
+    dispatch(loadOrders());
+  },
 });
 
 export { Orders };
 export default connect(
   mapStateToProps,
-  null,
+  mapDispatchToProps,
 )(Orders);

@@ -2,8 +2,7 @@ const Comment = require('../models/comment');
 
 
 const getCommentsByHotelId = async (req, res, next) => {
-  const id = req.params.hotel_id;
-  const comm = await Comment.find({hotelId: id})
+  const id = req.params.hotel_id
   try {
     const comments = await Comment
       .find({hotelId: id})

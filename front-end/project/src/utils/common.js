@@ -87,4 +87,5 @@ export const getPeriod = (dateFrom, dateTo) => {
   return periodInMinutes ? getFormatTime(periodInMinutes) : '';
 };
 
-export const getDateInFormat = (date, type) => dayjs(date).format(type);
+export const getDateInFormat = (date, type) =>  dayjs(date).format(type);
+

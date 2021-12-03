@@ -128,3 +128,12 @@ export const submitBooking = (hotelId, bookingInfo) => (dispatch, _getState, api
 };
 
 
+export const loadOrders = () => (dispatch, _getState, api) => {
+  api.get(APIRoutes.ORDERS_API)
+    .then(({data}) => {
+      const orders = humps.camelizeKeys(data);
+      dispatch({ type: ActionTypes.LOAD_ORDERS, payload: { orders }});
+    });
+};
+
+

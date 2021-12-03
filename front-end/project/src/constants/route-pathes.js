@@ -3,8 +3,8 @@ export const LOGIN = '/login';
 export const REGISTRATION = '/signup';
 export const ORDERS = '/orders';
 export const HOTELS = '/hotels';
-export const OFFER ='/offer/:id';
 export const NOT_FOUND = '/404';
+export const OFFER ='/offer/:id';
 export const getOfferLink = (id) => OFFER.replace(':id', id);
 
 //API

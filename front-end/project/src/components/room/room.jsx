@@ -10,7 +10,7 @@ import { connect } from 'react-redux';
 import { RATING_SCALE } from '../../constants/offers';
 import { loadHotelsNearby, loadHotelComments, loadHotelById } from '../../store/actions';
 import { AuthorizationStatus } from '../../constants/authorization-status';
-import { LOGIN, MAIN } from '../../constants/route-pathes';
+import { LOGIN } from '../../constants/route-pathes';
 
 function Room({ nearPlaces, onLoadHotelsNearby, hotel, onLoadComments, onLoadHotel, authorizationStatus }) {
   const { id } = useParams();

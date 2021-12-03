@@ -1,6 +1,10 @@
 import React from 'react';
+import {Link} from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { RATING_SCALE } from '../../constants/offers';
+import { getOfferLink } from '../../constants/route-pathes';
+import { DateFormat } from '../../constants/calendar';
+import { getDateInFormat } from '../../utils/common';
 
 function PlaceCardOrder ({ hotel }) {
   return (
@@ -11,7 +15,7 @@ function PlaceCardOrder ({ hotel }) {
       <div className="favorites__card-info place-card__info">
         <div className="place-card__price-wrapper">
           <div className="place-card__price">
-            <b className="place-card__price-value">BYN{hotel?.price}</b>
+            <b>BYN{hotel?.price}</b>
             <span className="place-card__price-text">&#47;&nbsp;ночь</span>
           </div>
           <button className="place-card__bookmark-button place-card__bookmark-button--active button" type="button">
@@ -28,10 +32,15 @@ function PlaceCardOrder ({ hotel }) {
           </div>
         </div>
         <h2 className="place-card__name">{hotel?.title}</h2>
-        <div className="place-card__date">
-          <span>{hotel && hotel?.dateFrom}</span>
-          <span>-</span>
-          <span>{hotel && hotel?.dateTo}</span>
+        <div className="place-card__date" style={{border: '1px solid grey', borderRadius: '4px', padding: '5px'}}>
+          <span>{hotel && getDateInFormat(hotel?.dateFrom, DateFormat.DATE_SLASH)}</span>
+          <span>  -  </span>
+          <span>{hotel && getDateInFormat(hotel?.dateTo, DateFormat.DATE_SLASH)}</span>
+        </div>
+        <p>Гостей: {hotel?.guestsAmount}</p>
+        <p>Итого: <b className="place-card__price-value">{hotel?.total}BYN</b></p>
+        <div>
+          <Link to={getOfferLink(hotel?.hotelId)} style={{marginLeft: 'auto'}}><b>Подробнее</b></Link>
         </div>
       </div>
     </article>
@@ -40,13 +49,16 @@ function PlaceCardOrder ({ hotel }) {
 
 PlaceCardOrder.propTypes = {
   hotel: PropTypes.shape({
+    hotelId: PropTypes.string,
     title: PropTypes.string,
     type: PropTypes.string,
     rating: PropTypes.number,
     price: PropTypes.number,
+    total: PropTypes.number,
     previewImage: PropTypes.string,
     dateFrom: PropTypes.string,
     dateTo: PropTypes.string,
+    guestsAmount: PropTypes.number,
   }),
 };
 

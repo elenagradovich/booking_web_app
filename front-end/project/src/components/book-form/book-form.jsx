@@ -21,6 +21,7 @@ function BookForm ({ setVisibilityBookForm, hotelId, onSubmitBooking, price }) {
         dateFrom: dateRange[0],
         dateTo: dateRange[1],
         guestsAmount,
+        total: totalValue,
       };
       onSubmitBooking(hotelId, bookingInfo);
     }

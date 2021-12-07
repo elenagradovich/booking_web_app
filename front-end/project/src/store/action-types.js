@@ -12,4 +12,6 @@ export const ActionTypes = {
   LOAD_HOTEL: 'load/HOTEL',
   REVIEW_FORM_VISIBLE: 'change/REVIEW_FORM_VISIBLE',
   LOAD_ORDERS: 'load/ORDERS',
+  USER_LOGOUT: 'change/USER_LOGOUT',
+  SHOW_ERROR_MESSAGE: 'change/SHOW_ERROR_MESSAGE',
 };

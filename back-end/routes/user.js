@@ -2,7 +2,7 @@ const {Router} = require('express')
 const router = Router()
 const authController = require('../controllers/auth-controller');
 const { check } = require('express-validator');
-
+const logout = require('../middleware/logout');
 
 router.post('/signup',
   [
@@ -30,10 +30,6 @@ router.post('/login',
 //   userController.getUsers
 // ); для создания ролей в бд
 
-router.delete('/logout', async (req, res) => {
-  //req.session.isAuthenticated = false === req.session.destroy
-  req.session.destroy()
-  res.status(204).send({message: "No Content"})
-})
+router.get('/logout', authController.logout)
 
 module.exports = router;

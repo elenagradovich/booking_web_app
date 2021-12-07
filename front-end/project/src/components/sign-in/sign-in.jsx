@@ -1,10 +1,10 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { signIn } from '../../store/actions';
+import { signIn, showErrorMessage } from '../../store/actions';
 
-function SignIn({ onSubmitData }) {
+function SignIn({ onSubmitData, errorMessage, onShowErrorMessage }) {
   const emailRef = useRef();
   const passwordRef = useRef();
 
@@ -16,12 +16,19 @@ function SignIn({ onSubmitData }) {
     });
   };
 
+  useEffect(() => {
+    setTimeout(() => {
+      onShowErrorMessage(null);
+    }, 5000);
+  }, [errorMessage, onShowErrorMessage]);
+
   return (
     <div className="page page--gray page--login">
       <main className="page__main page__main--login">
         <div className="page__login-container container">
           <section className="login">
             <h1 className="login__title">Вход</h1>
+            {errorMessage && <p style={{color: 'red', fontWeight: 'bold'}}>{errorMessage}</p>}
             <form className="login__form form" action="#" onSubmit={handleSubmit} method="post">
               <div className="login__input-wrapper form__input-wrapper">
                 <label className="visually-hidden">E-mail</label>
@@ -62,17 +69,26 @@ function SignIn({ onSubmitData }) {
 }
 SignIn.propTypes = {
   onSubmitData: PropTypes.func,
+  errorMessage: PropTypes.string,
+  onShowErrorMessage: PropTypes.func,
 };
 
 const mapDispatchToProps = (dispatch) => ({
   onSubmitData(authData) {
     dispatch(signIn(authData));
   },
+  onShowErrorMessage(err) {
+    dispatch(showErrorMessage(err));
+  },
+});
+
+const mapStateToProps = (state) => ({
+  errorMessage: state.DATA.errorMessage,
 });
 
 export { SignIn };
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps,
 )(SignIn);
 

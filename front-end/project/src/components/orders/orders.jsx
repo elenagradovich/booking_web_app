@@ -4,18 +4,25 @@ import { MAIN } from '../../constants/route-pathes';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PlaceCardOrder from '../place-card-order/place-card-order';
-import { loadOrders } from '../../store/actions';
+import { loadOrders, showErrorMessage } from '../../store/actions';
 import Header from '../header/header';
 
-function Orders ({ orders, onLoadOrders }) {
+function Orders ({ orders, onLoadOrders, errorMessage, onShowErrorMessage }) {
   useEffect(() => {
     onLoadOrders();
   }, []);
   const isEmpty = !orders?.length;//Optional chaining operator
 
+  useEffect(() => {
+    setTimeout(() => {
+      onShowErrorMessage(null);
+    }, 5000);
+  }, [errorMessage, onShowErrorMessage]);
+
   return (
     <div className={`page ${isEmpty && 'pages--favorites-empty'}`}>
       <Header />
+      {errorMessage && <p style={{color: 'red', fontWeight: 'bold'}}>{errorMessage}</p>}
       <main className={`page__main page__main--favorites ${isEmpty && 'page__main--favorites-empty'}`}>
         <div className="page__favorites-container container">
           {!isEmpty && (
@@ -45,15 +52,21 @@ function Orders ({ orders, onLoadOrders }) {
 Orders.propTypes = {
   orders: PropTypes.array,
   onLoadOrders: PropTypes.func,
+  errorMessage: PropTypes.string,
+  onShowErrorMessage: PropTypes.func,
 };
 
 const mapStateToProps = (state) => ({
   orders: state.DATA.orders,
+  errorMessage: state.DATA.errorMessage,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   onLoadOrders() {
     dispatch(loadOrders());
+  },
+  onShowErrorMessage(err) {
+    dispatch(showErrorMessage(err));
   },
 });
 

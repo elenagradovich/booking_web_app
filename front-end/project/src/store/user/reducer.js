@@ -5,7 +5,7 @@ import Immutable from 'seamless-immutable';
 const initialState = Immutable({
   authInfo: {},
   isDataLoaded: false,
-  authorizationStatus: AuthorizationStatus.UNKNOWN,
+  authorizationStatus: AuthorizationStatus.NO_AUTH,
 });
 
 export const reducer = (state = initialState, action = {}) => {

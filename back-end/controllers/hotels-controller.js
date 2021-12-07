@@ -16,7 +16,7 @@ const getAllHotels = async (req, res, next) => {
 
     res.send(hotels)
   } catch (e) {
-    return res.status(404).json({message: "Hotels not found"})
+    return res.status(400).json({message: "Hotels not found"})
   }
   
 };

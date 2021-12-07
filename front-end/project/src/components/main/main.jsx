@@ -3,11 +3,24 @@ import PropTypes from 'prop-types';
 import Hotels from '../hotels/hotels';
 import Header from '../header/header';
 import Sorting from '../sorting/sorting';
+import { showErrorMessage, loadHotels } from '../../store/actions';
 import { connect } from 'react-redux';
 
-function Main({ hotels }) {
+function Main({ hotels, errorMessage, onShowErrorMessage, onLoadHotels }) {
   const [hotelsCount, setHotelsCount] = useState(null);
   const [sortType, setSortType] = useState('POPULAR');
+
+  useEffect(() => {
+    setTimeout(() => {
+      onShowErrorMessage(null);
+    }, 5000);
+  }, [errorMessage, onShowErrorMessage]);
+
+  useEffect(() => {
+    if(!hotels || hotels?.length === 0) {
+      onLoadHotels();
+    }
+  }, []);
 
   useEffect(() => {
     hotels && setHotelsCount(hotels.length);
@@ -16,6 +29,7 @@ function Main({ hotels }) {
   return (
     <Fragment>
       <Header />
+      {errorMessage && <p style={{color: 'red', fontWeight: 'bold'}}>{errorMessage}</p>}
       <main className="page__main page__main--index">
         <h1 className="visually-hidden">Cities</h1>
         <div className="tabs">
@@ -54,14 +68,27 @@ function Main({ hotels }) {
 
 const mapStateToProps = (state) => ({
   hotels: state.DATA.hotels,
+  errorMessage: state.DATA.errorMessage,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  onShowErrorMessage(err) {
+    dispatch(showErrorMessage(err));
+  },
+  onLoadHotels() {
+    dispatch(loadHotels());
+  },
 });
 
 Main.propTypes = {
   hotels: PropTypes.array,
+  errorMessage: PropTypes.string,
+  onShowErrorMessage: PropTypes.func,
+  onLoadHotels: PropTypes.func,
 };
 
 export { Main };
 export default connect(
   mapStateToProps,
-  null,
+  mapDispatchToProps,
 )(Main);

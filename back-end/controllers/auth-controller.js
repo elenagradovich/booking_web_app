@@ -47,7 +47,7 @@ const signup = async (req, res, next) => {
     });
   } catch (err) {
     console.log(err);
-    return res.status(500).json({message: "Signup failed, please try again later."})
+    return res.status(400).json({message: "Signup failed"})
   }
 };
 
@@ -57,14 +57,14 @@ const login = async (req, res, next) => {
 
     let existingUser = await User.findOne({ email });
     if (!existingUser) {
-      return res.status(404).json({message: "User not found"})
+      return res.status(400).json({message: "User not found"})
     }
 
     let isValidPassword = await bcrypt.compareSync(password, existingUser.password);
     if (!isValidPassword) {
       return res.status(400).json({message: "Invalid password"})
     }
-
+    
     // generate jwt
     let token = generateJwt({userId: existingUser.id});
     req.session.isAuthenticated = true
@@ -98,6 +98,14 @@ const getUsers = async (req, res, next) => {
   }
 }
 
+const logout = async (req, res) => {
+  //req.session.isAuthenticated = false === req.session.destroy
+  //req.session.destroy();
+  res.json({message: "Logout success"});
+}
+
+
 exports.signup = signup;
 exports.login = login;
 exports.getUsers = getUsers;
+exports.logout = logout;

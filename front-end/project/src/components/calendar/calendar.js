@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useRef} from 'react';
 import PropTypes from 'prop-types';
 import Flatpickr from 'react-flatpickr';
 import rangePlugin from 'flatpickr/dist/plugins/rangePlugin';
@@ -6,10 +6,16 @@ import 'flatpickr/dist/themes/material_green.css';
 import { Russian } from 'flatpickr/dist/l10n/ru.js';
 
 function Calendar ({ setDateRange }) {
+  const dateRef = useRef();
   const [range, setRange] = useState([]);
 
   useEffect(() => {
-    setDateRange(range);
+    if(range?.length === 1) {
+      setRange(dateRef.current.value);
+      setDateRange(range[0], dateRef.current.value);
+    } else {
+      setDateRange(range);
+    }
   }, [range]);
 
 
@@ -57,6 +63,7 @@ function Calendar ({ setDateRange }) {
       >
         <b>выезд</b>
         <input
+          ref={dateRef}
           onChange={(date) => setRange(date)}
           style={{ border: 'none'}}
           placeholder='Выберите дату заезда..'

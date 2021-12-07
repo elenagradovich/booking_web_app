@@ -6,7 +6,7 @@ import { Provider } from 'react-redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import thunk  from 'redux-thunk';
 //import {checkAuth} from './store/actions';
-import {loadHotels, requireAuthorization, redirectToRoute} from './store/actions';
+import {loadHotels, requireAuthorization, redirectToRoute, showErrorMessage} from './store/actions';
 import { createAPI } from './services/api';
 import { AuthorizationStatus } from './constants/authorization-status';
 import { NOT_FOUND } from './constants/route-pathes';
@@ -15,7 +15,8 @@ import rootReducer from './store/root-reducer';
 
 const api = createAPI(
   () => store.dispatch(requireAuthorization(AuthorizationStatus.NO_AUTH)),
-  ()  => store.dispatch(redirectToRoute(NOT_FOUND)),
+  () => store.dispatch(redirectToRoute(NOT_FOUND)),
+  () => store.dispatch(showErrorMessage('Произошла ошибка')),
 );
 
 const store = createStore(
@@ -26,7 +27,6 @@ const store = createStore(
   ),
 );
 
-//store.dispatch(checkAuth());
 store.dispatch(loadHotels());
 
 ReactDOM.render(

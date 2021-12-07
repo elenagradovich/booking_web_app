@@ -17,12 +17,14 @@ const orderSchema = new Schema({
     type: Number,
     required: true,
   },
-  user_id: {
-    type: String,
+  userId: {
+    type: Schema.Types.ObjectID,
+    ref: 'User',
     required: true,
   },
-  hotel_id: {
-    type: String,
+  hotelId: {
+    type: Schema.Types.ObjectID,
+    ref: 'Hotel',
     required: true,
   },
   preview_image: {

@@ -40,8 +40,8 @@ function App({ isDataLoaded, authorizationStatus }) {
 }
 
 App.propTypes = {
-  isDataLoaded: PropTypes.bool.isRequired,
-  authorizationStatus: PropTypes.string.isRequired,
+  isDataLoaded: PropTypes.bool,
+  authorizationStatus: PropTypes.string,
 };
 
 const mapStateToProps = (state) => ({

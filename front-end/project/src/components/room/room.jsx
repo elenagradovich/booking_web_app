@@ -8,24 +8,31 @@ import BookForm from '../book-form/book-form';
 import Map from '../map/map';
 import { connect } from 'react-redux';
 import { RATING_SCALE } from '../../constants/offers';
-import { loadHotelsNearby, loadHotelComments, loadHotelById } from '../../store/actions';
+import { loadHotelsNearby, loadHotelComments, loadHotelById, showErrorMessage } from '../../store/actions';
 import { AuthorizationStatus } from '../../constants/authorization-status';
 import { LOGIN } from '../../constants/route-pathes';
 
-function Room({ nearPlaces, onLoadHotelsNearby, hotel, onLoadComments, onLoadHotel, authorizationStatus }) {
+function Room({ nearPlaces, onLoadHotelsNearby,
+  errorMessage, onShowErrorMessage, hotel, onLoadComments,
+  onLoadHotel, authorizationStatus }) {
   const { id } = useParams();
   const [isBookformVisible, setVisibilityBookForm] = useState(false);
-
   useEffect(() => {
     //onLoadHotelsNearby(id);
     onLoadComments(id);
     onLoadHotel(id);
   }, []);
 
+  useEffect(() => {
+    setTimeout(() => {
+      onShowErrorMessage(null);
+    }, 5000);
+  }, [errorMessage, onShowErrorMessage]);
 
   return (
     <div className="page">
       <Header />
+      {errorMessage && <p style={{color: 'red', fontWeight: 'bold'}}>{errorMessage}</p>}
       <main className="page__main page__main--property">
         <section className="property">
           <div className="property__gallery-container container">
@@ -128,6 +135,8 @@ Room.propTypes = {
   onLoadHotel: PropTypes.func,
   hotel: PropTypes.object,
   authorizationStatus: PropTypes.string,
+  errorMessage: PropTypes.string,
+  onShowErrorMessage: PropTypes.func,
 };
 
 
@@ -136,6 +145,7 @@ const mapStateToProps = (state) => ({
   comments: state.DATA.comments,
   nearPlaces: state.DATA.nearPlaces,
   hotel: state.DATA.hotel,
+  errorMessage: state.DATA.errorMessage,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -147,6 +157,9 @@ const mapDispatchToProps = (dispatch) => ({
   },
   onLoadHotel(id) {
     dispatch(loadHotelById(id));
+  },
+  onShowErrorMessage(err) {
+    dispatch(showErrorMessage(err));
   },
 });
 

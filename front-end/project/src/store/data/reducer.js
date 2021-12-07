@@ -1,5 +1,4 @@
 import { ActionTypes } from '../action-types';
-import { AuthorizationStatus } from '../../constants/authorization-status';
 import Immutable from 'seamless-immutable';
 
 const initialState = Immutable({
@@ -11,13 +10,21 @@ const initialState = Immutable({
   orders: [],
   favoriteHotels: [],
   isDataLoaded: false,
-  authorizationStatus: AuthorizationStatus.UNKNOWN,
   hotel: {},
   isReviewFormVisible: false,
+  errorMessage: null,
 });
 
 export const reducer = (state = initialState, action = {}) => {
   switch (action.type) {
+    case ActionTypes.USER_LOGOUT:{
+      return {
+        ...state,
+        orders: initialState.orders,
+        comments: initialState.comments,
+        hotel: initialState.hotel,
+      };
+    }
     case ActionTypes.START_LOADING:
       return {
         ...state,
@@ -79,6 +86,13 @@ export const reducer = (state = initialState, action = {}) => {
         ...state,
         isReviewFormVisible: true,
       };
+    case ActionTypes.SHOW_ERROR_MESSAGE: {
+      console.log('error:', action.payload);
+      return {
+        ...state,
+        errorMessage: action.payload,
+      };
+    }
     default:
       return state;
   }

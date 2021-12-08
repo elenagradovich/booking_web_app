@@ -12,6 +12,7 @@ const initialState = Immutable({
   isDataLoaded: false,
   hotel: {},
   isReviewFormVisible: false,
+  constranedDates: [],
   errorMessage: null,
 });
 
@@ -81,13 +82,18 @@ export const reducer = (state = initialState, action = {}) => {
         orders: action.payload.orders,
         isDataLoaded: true,
       };
+    case ActionTypes.LOAD_CONSTRANED_DATES:{
+      return {
+        ...state,
+        constranedDates: action.payload.dates,
+        isDataLoaded: true,
+      };}
     case ActionTypes.REVIEW_FORM_VISIBLE:
       return {
         ...state,
         isReviewFormVisible: true,
       };
     case ActionTypes.SHOW_ERROR_MESSAGE: {
-      console.log('error:', action.payload);
       return {
         ...state,
         errorMessage: action.payload,

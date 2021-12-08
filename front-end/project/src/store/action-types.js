@@ -14,4 +14,5 @@ export const ActionTypes = {
   LOAD_ORDERS: 'load/ORDERS',
   USER_LOGOUT: 'change/USER_LOGOUT',
   SHOW_ERROR_MESSAGE: 'change/SHOW_ERROR_MESSAGE',
+  LOAD_CONSTRANED_DATES: 'load/LOAD_CONSTRANED_DATES',
 };

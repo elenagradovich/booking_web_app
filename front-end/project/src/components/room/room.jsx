@@ -8,7 +8,8 @@ import BookForm from '../book-form/book-form';
 import Map from '../map/map';
 import { connect } from 'react-redux';
 import { RATING_SCALE } from '../../constants/offers';
-import { loadHotelsNearby, loadHotelComments, loadHotelById, showErrorMessage } from '../../store/actions';
+import { loadHotelsNearby, loadHotelComments, loadHotelById,
+  showErrorMessage } from '../../store/actions';
 import { AuthorizationStatus } from '../../constants/authorization-status';
 import { LOGIN } from '../../constants/route-pathes';
 

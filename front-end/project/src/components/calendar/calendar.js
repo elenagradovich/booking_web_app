@@ -4,8 +4,9 @@ import Flatpickr from 'react-flatpickr';
 import rangePlugin from 'flatpickr/dist/plugins/rangePlugin';
 import 'flatpickr/dist/themes/material_green.css';
 import { Russian } from 'flatpickr/dist/l10n/ru.js';
+import { connect } from 'react-redux';
 
-function Calendar ({ setDateRange }) {
+function Calendar ({ setDateRange, constranedDates }) {
   const dateRef = useRef();
   const [range, setRange] = useState([]);
 
@@ -42,12 +43,7 @@ function Calendar ({ setDateRange }) {
             minDate: 'today',
             dateFormat: 'Y-m-d',
             locale: Russian,
-            disable: [
-              // function(date) {
-              //     // disable every multiple of 8
-              //     return !(date.getDate() % 8);
-              // }
-            ],
+            disable: [...constranedDates.map(({from, to}) => ({from,to}))],
           }}
         />
       </div>
@@ -78,9 +74,19 @@ function Calendar ({ setDateRange }) {
 }
 
 Calendar.propTypes = {
+  constranedDates: PropTypes.array,
   setDateRange: PropTypes.func,
 };
 
 
-export default Calendar;
+const mapStateToProps = (state) => ({
+  constranedDates: state.DATA.constranedDates,
+});
+
+export { Calendar };
+export default connect(
+  mapStateToProps,
+  null,
+)(Calendar);
+
 

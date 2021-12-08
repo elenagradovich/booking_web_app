@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { submitBooking } from '../../store/actions';
+import { submitBooking, loadConstranedDates } from '../../store/actions';
 import { connect } from 'react-redux';
 import Calendar from '../calendar/calendar';
 import {getDiffDates} from '../../utils/common';
 
 
-function BookForm ({ setVisibilityBookForm, hotelId, onSubmitBooking, price }) {
+function BookForm ({ setVisibilityBookForm, hotelId, onLoadConstranedDates,
+  onSubmitBooking, price }) {
   const [guestsAmount, setGuestsAmount] = useState(1);
   const [dateRange, setDateRange] = useState([]);
 
@@ -48,6 +49,11 @@ function BookForm ({ setVisibilityBookForm, hotelId, onSubmitBooking, price }) {
     }
   }, [periodDays]);
 
+  useEffect(() => {
+    debugger
+    onLoadConstranedDates(hotelId);
+  }, []);
+
   return (
     <form
       style={
@@ -88,11 +94,15 @@ BookForm.propTypes = {
   price: PropTypes.number,
   setVisibilityBookForm: PropTypes.func,
   hotelId: PropTypes.string,
+  onLoadConstranedDates: PropTypes.func,
 };
 
 const mapDispatchToProps = (dispatch) => ({
   onSubmitBooking(hotelId,bookingInfo) {
     dispatch(submitBooking(hotelId, bookingInfo));
+  },
+  onLoadConstranedDates(id) {
+    dispatch(loadConstranedDates(id));
   },
 });
 

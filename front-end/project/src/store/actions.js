@@ -135,9 +135,9 @@ export const submitBooking = (hotelId, bookingInfo) => (dispatch, _getState, api
     .then(({data}) => {
       const orders = humps.camelizeKeys(data);
       dispatch({ type: ActionTypes.LOAD_ORDERS, payload: { orders }});
+      dispatch(redirectToRoute(APIRoutes.ORDERS));
     });
 };
-
 
 export const loadOrders = () => (dispatch, _getState, api) => {
   api.get(APIRoutes.ORDERS_API, {headers: {
@@ -149,4 +149,12 @@ export const loadOrders = () => (dispatch, _getState, api) => {
     });
 };
 
-
+export const loadConstranedDates = (id) => (dispatch, _getState, api) => {
+  api.get(APIRoutes.getConstranedLink(id), {headers: {
+    'Authorization': `BEARER ${localStorage.getItem('token') ?? ''}`,
+  }})
+    .then(({data}) => {
+      const dates = humps.camelizeKeys(data);
+      dispatch({ type: ActionTypes.LOAD_CONSTRANED_DATES, payload: { dates }});
+    });
+};

@@ -32,7 +32,7 @@ const mapImageUrlToLocalFilePath = (req, url) => {
  * @param {Object|string} payload
  * @param {number} expiresInSeconds - number of seconds the jwt will expire after
  */
-const generateJwt = (payload, expiresInSeconds = 40000) => {
+const generateJwt = (payload, expiresInSeconds = 9999999) => {
   const expiration = Math.floor(Date.now() / 1000) + expiresInSeconds;
   const value = jwt.sign(
     {

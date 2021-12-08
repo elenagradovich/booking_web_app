@@ -1,8 +1,8 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { RATING_SCALE } from '../../constants/offers';
-import { getOfferLink } from '../../constants/route-pathes';
+// import {Link} from 'react-router-dom';
+// import { getOfferLink } from '../../constants/route-pathes';
 import { DateFormat } from '../../constants/calendar';
 import { getDateInFormat } from '../../utils/common';
 
@@ -32,6 +32,10 @@ function PlaceCardOrder ({ hotel }) {
           </div>
         </div>
         <h2 className="place-card__name">{hotel?.title}</h2>
+        <div>
+          <span>Дата заказа:</span>
+          <span>{hotel && getDateInFormat(hotel?.date, DateFormat.DATE_SLASH)}</span>
+        </div>
         <div className="place-card__date" style={{border: '1px solid grey', borderRadius: '4px', padding: '5px'}}>
           <span>{hotel && getDateInFormat(hotel?.dateFrom, DateFormat.DATE_SLASH)}</span>
           <span>  -  </span>
@@ -39,9 +43,9 @@ function PlaceCardOrder ({ hotel }) {
         </div>
         <p>Гостей: {hotel?.guestsAmount}</p>
         <p>Итого: <b className="place-card__price-value">{hotel?.total}BYN</b></p>
-        <div>
-          <Link to={getOfferLink(hotel?.hotelId)} style={{marginLeft: 'auto'}}><b>Подробнее</b></Link>
-        </div>
+        {/* <div>
+          <Link to={getOfferLink(hotel?._id)} style={{marginLeft: 'auto'}}><b>Подробнее</b></Link>
+        </div> */}
       </div>
     </article>
   );
@@ -49,7 +53,7 @@ function PlaceCardOrder ({ hotel }) {
 
 PlaceCardOrder.propTypes = {
   hotel: PropTypes.shape({
-    hotelId: PropTypes.string,
+    _id: PropTypes.string,
     title: PropTypes.string,
     type: PropTypes.string,
     rating: PropTypes.number,
@@ -58,6 +62,7 @@ PlaceCardOrder.propTypes = {
     previewImage: PropTypes.string,
     dateFrom: PropTypes.string,
     dateTo: PropTypes.string,
+    date: PropTypes.string,
     guestsAmount: PropTypes.number,
   }),
 };

@@ -22,7 +22,7 @@ const addOrderByUser = async (req, res, next) => {
     const hotelId = req.params.hotelId;
     const userId = req.userData.userId;
     const { dateFrom, dateTo, guestsAmount, total } = req.body;
-    
+
     // const ordersByHotelId = await Order.find({hotel: hotelId});
     // if(ordersByHotelId.length > 0) {
     //   const isEx = ordersByHotelId.find({date_from: { $lte: {dateFrom} }});

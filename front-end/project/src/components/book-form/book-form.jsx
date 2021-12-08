@@ -50,7 +50,6 @@ function BookForm ({ setVisibilityBookForm, hotelId, onLoadConstranedDates,
   }, [periodDays]);
 
   useEffect(() => {
-    debugger
     onLoadConstranedDates(hotelId);
   }, []);
 

@@ -29,7 +29,7 @@ function Orders ({ orders, onLoadOrders, errorMessage, onShowErrorMessage }) {
             <section className="favorites">
               <h1 className="favorites__title">Забронированные варианты</h1>
               <ul className="favorites__list">
-                {orders.map((hotel) => <PlaceCardOrder hotel={hotel} key={hotel.id}/>)}
+                {orders.map((hotel) => <PlaceCardOrder hotel={hotel} key={`key-${hotel._id}`}/>)}
               </ul>
             </section>)}
           {isEmpty &&

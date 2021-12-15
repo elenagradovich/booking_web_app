@@ -72,7 +72,7 @@ function Room({ nearPlaces, onLoadHotelsNearby,
                   {`${hotel && hotel?.bedrooms} комнат`}
                 </li>
                 <li className="property__feature property__feature--adults">
-                  {`Максимальное количтво гостей ${hotel && hotel?.maxAdults}`}
+                  {`Максимальное количество гостей ${hotel && hotel?.maxAdults}`}
                 </li>
               </ul>
               <div className="property__price">

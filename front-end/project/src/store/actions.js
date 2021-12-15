@@ -1,7 +1,8 @@
 import { ActionTypes } from './action-types';
 import * as APIRoutes from '../constants/route-pathes';
 import { AuthorizationStatus } from '../constants/authorization-status';
-import { getHotelCommentsLink, getHotelLink, getNearbyHotelsLink, MAIN, getHotelBookLink } from '../constants/route-pathes';
+import { getHotelCommentsLink, getHotelLink, getHotelCancelBookLink,
+  getNearbyHotelsLink, MAIN, getHotelBookLink } from '../constants/route-pathes';
 
 import humps from 'humps';
 
@@ -136,6 +137,16 @@ export const submitBooking = (hotelId, bookingInfo) => (dispatch, _getState, api
       const orders = humps.camelizeKeys(data);
       dispatch({ type: ActionTypes.LOAD_ORDERS, payload: { orders }});
       dispatch(redirectToRoute(APIRoutes.ORDERS));
+    });
+};
+
+export const cancelBooking = (orderId) => (dispatch, _getState, api) => {
+  api.delete(getHotelCancelBookLink(orderId),{headers: {
+    'Authorization': `BEARER ${localStorage.getItem('token') ?? ''}`,
+  }})
+    .then(({data}) => {
+      const orders = humps.camelizeKeys(data);
+      dispatch({ type: ActionTypes.LOAD_ORDERS, payload: { orders }});
     });
 };
 

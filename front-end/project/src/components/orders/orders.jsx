@@ -4,7 +4,7 @@ import { MAIN } from '../../constants/route-pathes';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PlaceCardOrder from '../place-card-order/place-card-order';
-import { loadOrders, showErrorMessage } from '../../store/actions';
+import { loadOrders, showErrorMessage, cancelBooking } from '../../store/actions';
 import Header from '../header/header';
 
 function Orders ({ orders, onLoadOrders, errorMessage, onShowErrorMessage }) {
@@ -29,7 +29,7 @@ function Orders ({ orders, onLoadOrders, errorMessage, onShowErrorMessage }) {
             <section className="favorites">
               <h1 className="favorites__title">Забронированные варианты</h1>
               <ul className="favorites__list">
-                {orders.map((hotel) => <PlaceCardOrder hotel={hotel} key={`key-${hotel._id}`}/>)}
+                {orders.map((order) => <PlaceCardOrder order={order} key={`key-${order.id}`}/>)}
               </ul>
             </section>)}
           {isEmpty &&
@@ -67,6 +67,9 @@ const mapDispatchToProps = (dispatch) => ({
   },
   onShowErrorMessage(err) {
     dispatch(showErrorMessage(err));
+  },
+  onCanncelBooking() {
+    dispatch(cancelBooking());
   },
 });
 

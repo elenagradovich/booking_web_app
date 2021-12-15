@@ -1,16 +1,16 @@
 const Order = require('../models/order');
 const Hotel = require('../models/hotel');
+const mongoose = require('mongoose');
+//const { ObjectId } = require('mongodb');
 
 const getOrdersByUser = async (req, res, next) => {
   const userId = req.userData.userId;
-  console.log('userId:', userId);
   try {
     const orders = await Order
     .find({user: userId})
     .populate({ path: 'user', select: 'name' })
     .exec()
 
-    console.log('orders:', orders)
     res.send(orders);
   } catch (err) {
     return res.status(400).json({message: "Orders not found"})
@@ -23,28 +23,6 @@ const addOrderByUser = async (req, res, next) => {
     const userId = req.userData.userId;
     const { dateFrom, dateTo, guestsAmount, total } = req.body;
 
-    // const ordersByHotelId = await Order.find({hotel: hotelId});
-    // if(ordersByHotelId.length > 0) {
-    //   const isEx = ordersByHotelId.find({date_from: { $lte: {dateFrom} }});
-    //   if(isEx) {
-    //     if(existOrders && existOrders.length > 0) res.status(400).json({message: "Date booked. Order was not added"});
-    //   }
-          // $or: [
-          //   {
-          //     $and: [
-          //       { date_from: { $gte: {dateFrom} } },
-          //       { date_to: {$lt: {dateFrom} } }
-          //     ]
-          //   },
-          //   {
-          //     $and: [
-          //       { date_from: { $lt: {dateTo} } },
-          //       { date_to: { $gte: {dateTo} } }
-          //     ]
-          //   }
-          // ]
-          
-    // }
     const hotel = await Hotel.findById(hotelId);
     if(!hotel) res.status(400).json({message: "Invalid hotel id"});
     const order = new Order({
@@ -62,14 +40,12 @@ const addOrderByUser = async (req, res, next) => {
 
     if(!order) res.status(400).json({message: "Order was not added"});
     await order.save()
-    console.log('order was added');
     const orders = await Order
     .find({user: userId})
     .populate({ path: 'userId', select: 'name' })
     .exec()
       
     if(!orders) res.status(400).json({message: "Error with getting orders from DB"});
-    console.log('orders:', orders)
     res.status(200).send(orders);
     
   } catch (err) {
@@ -79,12 +55,22 @@ const addOrderByUser = async (req, res, next) => {
 
 const cancelBooking = async (req, res, next) => {
   const userId = req.userData.userId;
-  const hotelId = req.params.hotelId;
+  const _id = mongoose.Types.ObjectId(req.params.orderId);
+  
   try {
-    const orders = await Order.find({user: userId,  hotel: hotelId});
-    res.send(orders);
+    const deletedOrder =  await Order.findByIdAndDelete(_id);
+    if(deletedOrder) {
+      const orders = await Order
+      .find({user: userId})
+      .populate({ path: 'user', select: 'name' })
+      .exec()
+
+      res.send(orders);
+    } else {
+      return res.status(400).json({message: 'Deleting order  not found'});
+    }
   } catch (err) {
-    return res.status(400).json({message: "Orders not found"})
+    return res.status(400).json({message: `${err}. Error with deleting`});
   }
 };
 

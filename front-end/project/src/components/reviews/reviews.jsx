@@ -19,7 +19,7 @@ function Reviews ({ hotelId, comments, authorizationStatus, isReviewFormVisible,
           : <button
             className='reviews__show-form-button button'
             onClick={onSetVisibleReviewForm}>
-              Оставить отзыв
+              ОСТАВИТЬ ОТЗЫВ
           </button>
         )}
     </section>

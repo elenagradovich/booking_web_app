@@ -41,7 +41,7 @@ function Header ({ authInfo, authorizationStatus, onLogout }) {
               {isLogged && (
                 <li className="header__nav-item">
                   <button className="header__nav-link" onClick={onLogout}>
-                    <span className="header__signout">Выйти</span>
+                    <span className="header__signout">ВЫХОД</span>
                   </button>
                 </li>)}
             </ul>
